@@ -1,0 +1,85 @@
+const firstStudentResults = [
+  {
+    participantId: 'demo-learner-1',
+    displayNumber: 1,
+    displayName: 'Demo learner 01',
+    exercise: 'message-remix',
+    submissionId: 'demo-submission-message-1',
+    sourceText: 'Your kindness makes our class a more welcoming place, and your positive attitude encourages everyone.',
+    responseText: 'Kind words help everyone feel welcome, and a positive attitude encourages the class.',
+    criteria: { meaningPreservation: 4, vocabularyVariation: 2, sentenceRestructuring: 1, completenessAndTone: 2 },
+    total: 9,
+    feedback: 'The meaning is clear and the wording is varied. Try changing the sentence structure further.',
+    status: 'complete',
+    corrected: false,
+  },
+  {
+    participantId: 'demo-learner-1',
+    displayNumber: 1,
+    displayName: 'Demo learner 01',
+    exercise: 'academic-transfer',
+    submissionId: 'demo-submission-academic-1',
+    sourceText: "Regular participation in extracurricular activities can improve university students' social skills and contribute to their personal development.",
+    responseText: 'Taking part in extracurricular activities can strengthen university students’ social abilities and support personal growth.',
+    criteria: { meaningPreservation: 4, vocabularyVariation: 1, sentenceRestructuring: 2, completenessAndTone: 2 },
+    total: 9,
+    feedback: 'The main ideas are preserved in an appropriate academic tone.',
+    status: 'complete',
+    corrected: false,
+  },
+];
+
+const secondStudentResults = [
+  {
+    participantId: 'demo-learner-2',
+    displayNumber: 2,
+    displayName: 'Demo learner 02',
+    exercise: 'message-remix',
+    submissionId: null,
+    sourceText: null,
+    responseText: null,
+    criteria: { meaningPreservation: 0, vocabularyVariation: 0, sentenceRestructuring: 0, completenessAndTone: 0 },
+    total: 0,
+    feedback: 'No submission received before the submission window closed.',
+    status: 'complete',
+    corrected: false,
+  },
+  {
+    participantId: 'demo-learner-2',
+    displayNumber: 2,
+    displayName: 'Demo learner 02',
+    exercise: 'academic-transfer',
+    submissionId: null,
+    sourceText: null,
+    responseText: null,
+    criteria: { meaningPreservation: 0, vocabularyVariation: 0, sentenceRestructuring: 0, completenessAndTone: 0 },
+    total: 0,
+    feedback: 'No submission received before the submission window closed.',
+    status: 'complete',
+    corrected: false,
+  },
+];
+
+const firstFinal = 30 * (2 / 3) + 35 * (9 / 10) + 35 * (9 / 10);
+
+export const previewInsights = {
+  status: 'complete',
+  completed: 4,
+  total: 4,
+  failed: 0,
+  flagged: 0,
+  published: true,
+  publishedAt: '2026-01-01T00:00:00.000Z',
+  results: [...firstStudentResults, ...secondStudentResults],
+  leaderboard: [
+    { participantId: 'demo-learner-1', displayNumber: 1, displayName: 'Demo learner 01', quizScore: 2, messageRemix: 9, academicTransfer: 9, finalScore: firstFinal, rank: 1 },
+    { participantId: 'demo-learner-2', displayNumber: 2, displayName: 'Demo learner 02', quizScore: 0, messageRemix: 0, academicTransfer: 0, finalScore: 0, rank: 2 },
+  ],
+  studentResults: {
+    results: firstStudentResults,
+    quizScore: 2,
+    finalScore: firstFinal,
+    rank: 1,
+    publishedAt: '2026-01-01T00:00:00.000Z',
+  },
+};

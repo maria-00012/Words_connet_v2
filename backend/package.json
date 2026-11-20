@@ -1,0 +1,19 @@
+{
+  "name": "@words-connect/backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file-if-exists=../.env --watch src/server.js",
+    "start": "node --env-file-if-exists=../.env src/server.js",
+    "test": "node --env-file-if-exists=../.env --test"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.4"
+  }
+}
