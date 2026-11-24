@@ -72,7 +72,7 @@ function previewRanking(results) {
     .map((entry, index) => ({ ...entry, rank: index + 1 }));
 }
 
-export default function AppLayout({ mode, apiStatus, socketStatus, session, identity, sessionError }) {
+export default function AppLayout({ mode, apiStatus, socketStatus, session, identity, sessionError, onExitPreview }) {
   const {
     enterTeacher, startLearning, wall: liveWall, ownWallStatuses, submitWallMessage, submitTeacherWallMessage,
     setWallSubmissionsOpen, deleteWallMessage, identifyWallAuthor,
@@ -329,7 +329,7 @@ export default function AppLayout({ mode, apiStatus, socketStatus, session, iden
       <div className="app-frame">
           <AppHeader mode={mode} apiStatus={apiStatus} socketStatus={socketStatus} identity={identity} />
 
-        {mode === 'preview' && <PreviewIndicator />}
+        {mode === 'preview' && <PreviewIndicator onExit={onExitPreview} />}
 
         <StageNavigation
           stages={stages}
@@ -358,22 +358,33 @@ export default function AppLayout({ mode, apiStatus, socketStatus, session, iden
             studentResults={mode === 'preview' ? previewAssessment.previewOwn : studentResults}
             publicLeaderboard={mode === 'preview' ? previewAssessment.leaderboard : publicLeaderboard}
           />
-          {mode === 'student' && !identity && activeStage.id === 'welcome' && <aside className={`teacher-access-entry ${teacherAccessOpen ? 'is-form-open' : ''}`}>
-            {!teacherAccessOpen ? <section className="teacher-portal-card" aria-labelledby="teacher-portal-title">
-              <span className="teacher-portal-icon" aria-hidden="true">✦</span>
-              <div className="teacher-portal-copy">
-                <h2 id="teacher-portal-title">Are you a teacher?</h2>
-                <p>Access the teacher dashboard to manage the workshop, activities and student participation.</p>
+          {mode === 'student' && !identity && activeStage.id === 'welcome' && <div className="welcome-entry-options">
+            <aside className={`teacher-access-entry ${teacherAccessOpen ? 'is-form-open' : ''}`}>
+              {!teacherAccessOpen ? <section className="teacher-portal-card" aria-labelledby="teacher-portal-title">
+                <span className="teacher-portal-icon" aria-hidden="true">✦</span>
+                <div className="teacher-portal-copy">
+                  <h2 id="teacher-portal-title">Are you a teacher?</h2>
+                  <p>Access the teacher dashboard to manage the workshop, activities and student participation.</p>
+                </div>
+                <button className="teacher-portal-button" type="button" onClick={() => { setTeacherAccessOpen(true); setTeacherAccessError(''); }}>Enter Teacher Portal<span aria-hidden="true">→</span></button>
+              </section> : <form className="teacher-access-form" onSubmit={submitTeacherAccess}>
+                <label htmlFor="teacher-access-passcode">Teacher passcode</label>
+                <input id="teacher-access-passcode" type="password" inputMode="numeric" autoComplete="current-password" value={teacherPasscode} onChange={(event) => setTeacherPasscode(event.target.value)} required />
+                <p className="teacher-access-demo-passcode"><strong>Demo passcode: <span>2420</span></strong></p>
+                <div className="teacher-access-actions"><button type="submit" className="teacher-access-submit">Continue</button><button type="button" className="teacher-access-cancel" onClick={() => { setTeacherAccessOpen(false); setTeacherPasscode(''); setTeacherAccessError(''); }}>Cancel</button></div>
+                {teacherAccessError && <p role="alert">{teacherAccessError}</p>}
+              </form>}
+            </aside>
+            <aside className="demo-entry-card" aria-labelledby="demo-entry-title">
+              <span className="demo-entry-icon" aria-hidden="true">◎</span>
+              <div className="demo-entry-copy">
+                <h2 id="demo-entry-title">Want to explore Words Connect?</h2>
+                <p>Take a quick tour of the workshop and explore its interactive activities using sample data.</p>
               </div>
-              <button className="teacher-portal-button" type="button" onClick={() => { setTeacherAccessOpen(true); setTeacherAccessError(''); }}>Enter Teacher Portal<span aria-hidden="true">→</span></button>
-            </section> : <form className="teacher-access-form" onSubmit={submitTeacherAccess}>
-              <label htmlFor="teacher-access-passcode">Teacher passcode</label>
-              <input id="teacher-access-passcode" type="password" inputMode="numeric" autoComplete="current-password" value={teacherPasscode} onChange={(event) => setTeacherPasscode(event.target.value)} required />
-              <p className="teacher-access-demo-passcode"><strong>Demo passcode: <span>2420</span></strong></p>
-              <div className="teacher-access-actions"><button type="submit" className="teacher-access-submit">Continue</button><button type="button" className="teacher-access-cancel" onClick={() => { setTeacherAccessOpen(false); setTeacherPasscode(''); setTeacherAccessError(''); }}>Cancel</button></div>
-              {teacherAccessError && <p role="alert">{teacherAccessError}</p>}
-            </form>}
-          </aside>}
+              <button className="demo-entry-button" type="button" onClick={() => window.dispatchEvent(new Event('wc-preview'))}>Explore Demo<span aria-hidden="true">→</span></button>
+              <p className="demo-entry-note">No login or real workshop session required.</p>
+            </aside>
+          </div>}
           {hasTeacherControls(mode) && <TeacherControlPanel
             stage={activeStage}
             mode={mode}

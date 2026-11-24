@@ -28,17 +28,32 @@ function WordsConnectApp() {
       setApiStatus(preview ? 'Local preview' : 'Waiting');
     }
 
-    const onPreview = () => setPreview(true);
+    const onPreview = () => {
+      setPreview(true);
+      setMode('preview');
+    };
+    const onExitPreview = () => {
+      setPreview(false);
+      setMode('student');
+      const url = new URL(window.location.href);
+      url.searchParams.delete('preview');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+    };
     window.addEventListener('wc-preview', onPreview);
-    return () => { active = false; window.removeEventListener('wc-preview', onPreview); };
-  }, [identity, preview]);
+    window.addEventListener('wc-exit-preview', onExitPreview);
+    return () => {
+      active = false;
+      window.removeEventListener('wc-preview', onPreview);
+      window.removeEventListener('wc-exit-preview', onExitPreview);
+    };
+  }, [identity, preview, setMode]);
 
   useEffect(() => { if (identity && !preview) setMode(identity.role); }, [identity, preview, setMode]);
 
   const joinSessionId = new URLSearchParams(window.location.search).get('join');
   if (!sessionReady && !preview) return <main className="session-entry"><section className="session-entry-card"><p className="section-kicker">Words Connect</p><h1>Opening your workshop…</h1></section></main>;
   if (!identity && joinSessionId && !preview) return <SessionEntry joinSessionId={joinSessionId} />;
-  return <AppLayout mode={identity?.role ?? (preview ? 'preview' : mode)} apiStatus={apiStatus} socketStatus={socketStatus} session={session} identity={identity} sessionError={error} />;
+  return <AppLayout mode={identity?.role ?? (preview ? 'preview' : mode)} apiStatus={apiStatus} socketStatus={socketStatus} session={session} identity={identity} sessionError={error} onExitPreview={() => window.dispatchEvent(new Event('wc-exit-preview'))} />;
 }
 
 export default function App() {
