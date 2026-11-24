@@ -1695,3 +1695,93 @@ input, textarea, select { max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Teacher Portal entry below the unchanged welcome experience */
+.teacher-access-entry { display: block; margin-top: 0; }
+.teacher-portal-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1.15rem;
+  overflow: hidden;
+  padding: clamp(1.1rem, 2.6vw, 1.7rem);
+  border: 1px solid #a8c1ee;
+  border-left: 6px solid #e97953;
+  border-radius: 1.2rem;
+  background: linear-gradient(115deg, #fff2d7 0%, #fff 40%, #eaf2ff 100%);
+  box-shadow: 0 .75rem 2rem rgb(31 64 125 / 10%);
+}
+.teacher-portal-icon {
+  display: grid;
+  width: 3.15rem;
+  height: 3.15rem;
+  place-items: center;
+  border: 1px solid #f0bd5c;
+  border-radius: 1rem;
+  background: #ffdf83;
+  box-shadow: 0 .3rem .75rem rgb(159 101 10 / 15%);
+  color: #613700;
+  font-size: 1.55rem;
+}
+.teacher-portal-copy h2 {
+  margin: 0;
+  color: #17396e;
+  font-size: clamp(1.25rem, 2.3vw, 1.65rem);
+  font-weight: 850;
+  letter-spacing: -.025em;
+}
+.teacher-portal-copy p {
+  max-width: 44rem;
+  margin: .35rem 0 0;
+  color: #344b68;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+.teacher-portal-button {
+  display: inline-flex;
+  min-height: 3.35rem;
+  align-items: center;
+  justify-content: center;
+  gap: .8rem;
+  padding: .8rem 1.1rem;
+  border: 1px solid #123f9b;
+  border-radius: .85rem;
+  background: #1d4ed8;
+  box-shadow: 0 .5rem 1rem rgb(29 78 216 / 24%);
+  color: #fff;
+  font: inherit;
+  font-size: .98rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+.teacher-portal-button:hover { transform: translateY(-1px); background: #1742b7; box-shadow: 0 .7rem 1.2rem rgb(29 78 216 / 30%); }
+.teacher-portal-button span { font-size: 1.25rem; line-height: 1; }
+.teacher-access-entry.is-form-open { display: flex; justify-content: flex-end; }
+.teacher-access-form { width: min(100%, 23rem); }
+.teacher-access-demo-passcode {
+  margin: 0;
+  padding: .7rem .8rem;
+  border: 1px solid #91b3f1;
+  border-radius: .65rem;
+  background: #eaf2ff;
+  color: #173d83;
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+.teacher-access-demo-passcode strong { font-weight: 850; }
+.teacher-access-demo-passcode span { color: #123478; font-size: 1.2em; font-weight: 900; letter-spacing: .06em; }
+@media (max-width: 640px) {
+  .teacher-portal-card { grid-template-columns: 2.7rem minmax(0, 1fr); gap: .85rem; padding: 1rem; }
+  .teacher-portal-icon { width: 2.6rem; height: 2.6rem; border-radius: .8rem; }
+  .teacher-portal-copy h2 { font-size: 1.25rem; }
+  .teacher-portal-copy p { font-size: .94rem; }
+  .teacher-portal-button { grid-column: 1 / -1; width: 100%; min-height: 3.25rem; }
+  .teacher-access-form { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .teacher-portal-button { transition: none; }
+  .teacher-portal-button:hover { transform: none; }
+}

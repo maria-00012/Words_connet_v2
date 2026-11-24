@@ -358,10 +358,18 @@ export default function AppLayout({ mode, apiStatus, socketStatus, session, iden
             studentResults={mode === 'preview' ? previewAssessment.previewOwn : studentResults}
             publicLeaderboard={mode === 'preview' ? previewAssessment.leaderboard : publicLeaderboard}
           />
-          {mode === 'student' && !identity && activeStage.id === 'welcome' && <aside className="teacher-access-entry">
-            {!teacherAccessOpen ? <button className="teacher-access-link" type="button" onClick={() => { setTeacherAccessOpen(true); setTeacherAccessError(''); }}>Teacher Access</button> : <form className="teacher-access-form" onSubmit={submitTeacherAccess}>
+          {mode === 'student' && !identity && activeStage.id === 'welcome' && <aside className={`teacher-access-entry ${teacherAccessOpen ? 'is-form-open' : ''}`}>
+            {!teacherAccessOpen ? <section className="teacher-portal-card" aria-labelledby="teacher-portal-title">
+              <span className="teacher-portal-icon" aria-hidden="true">✦</span>
+              <div className="teacher-portal-copy">
+                <h2 id="teacher-portal-title">Are you a teacher?</h2>
+                <p>Access the teacher dashboard to manage the workshop, activities and student participation.</p>
+              </div>
+              <button className="teacher-portal-button" type="button" onClick={() => { setTeacherAccessOpen(true); setTeacherAccessError(''); }}>Enter Teacher Portal<span aria-hidden="true">→</span></button>
+            </section> : <form className="teacher-access-form" onSubmit={submitTeacherAccess}>
               <label htmlFor="teacher-access-passcode">Teacher passcode</label>
               <input id="teacher-access-passcode" type="password" inputMode="numeric" autoComplete="current-password" value={teacherPasscode} onChange={(event) => setTeacherPasscode(event.target.value)} required />
+              <p className="teacher-access-demo-passcode"><strong>Demo passcode: <span>2420</span></strong></p>
               <div className="teacher-access-actions"><button type="submit" className="teacher-access-submit">Continue</button><button type="button" className="teacher-access-cancel" onClick={() => { setTeacherAccessOpen(false); setTeacherPasscode(''); setTeacherAccessError(''); }}>Cancel</button></div>
               {teacherAccessError && <p role="alert">{teacherAccessError}</p>}
             </form>}
